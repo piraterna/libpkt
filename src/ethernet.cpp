@@ -14,19 +14,19 @@
 namespace libpkt {
 EthernetFrame::EthernetFrame(const uint8_t* data, size_t length) {
     if (length < HeaderSize) {
-        valid_ = false;
+        m_valid = false;
         return;
     }
-    std::memcpy(dst_mac_.data(), data, 6);
-    std::memcpy(src_mac_.data(), data + 6, 6);
-    ethertype_ = (static_cast<uint16_t>(data[12]) << 8) | data[13];
-    payload_ = data + HeaderSize;
-    payload_len_ = length - HeaderSize;
-    valid_ = true;
+    std::memcpy(m_dst_mac.data(), data, 6);
+    std::memcpy(m_src_mac.data(), data + 6, 6);
+    m_ethertype = (static_cast<uint16_t>(data[12]) << 8) | data[13];
+    m_payload = data + HeaderSize;
+    m_payload_len = length - HeaderSize;
+    m_valid = true;
 }
 
 bool EthernetFrame::IsValid() const {
-    return valid_;
+    return m_valid;
 }
 
 std::string EthernetFrame::MacToString(const std::array<uint8_t, 6>& mac) const {
@@ -41,15 +41,15 @@ std::string EthernetFrame::MacToString(const std::array<uint8_t, 6>& mac) const 
 }
 
 std::string EthernetFrame::SrcMac() const {
-    return MacToString(src_mac_);
+    return MacToString(m_src_mac);
 }
 
 std::string EthernetFrame::DstMac() const {
-    return MacToString(dst_mac_);
+    return MacToString(m_dst_mac);
 }
 
 EtherType EthernetFrame::Ethertype() const {
-    switch (ethertype_) {
+    switch (m_ethertype) {
     case 0x0800:
         return EtherType::IPv4;
     case 0x0806:
@@ -67,10 +67,10 @@ EtherType EthernetFrame::Ethertype() const {
     }
 }
 const uint8_t* EthernetFrame::Payload() const {
-    return payload_;
+    return m_payload;
 }
 
 size_t EthernetFrame::PayloadLength() const {
-    return payload_len_;
+    return m_payload_len;
 }
 } // namespace libpkt

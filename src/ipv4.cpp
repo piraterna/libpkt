@@ -12,7 +12,7 @@
 
 namespace libpkt {
 IPv4Packet::IPv4Packet(const uint8_t* data, size_t length)
-    : data_(data), length_(length), valid_(false) {
+    : m_data(data), m_length(length), m_valid(false) {
     if (length < MinHeaderSize)
         return;
 
@@ -26,27 +26,27 @@ IPv4Packet::IPv4Packet(const uint8_t* data, size_t length)
     if (length < header_len)
         return;
 
-    valid_ = true;
+    m_valid = true;
 }
 
 bool IPv4Packet::IsValid() const {
-    return valid_;
+    return m_valid;
 }
 
 uint8_t IPv4Packet::Version() const {
-    return data_[0] >> 4;
+    return m_data[0] >> 4;
 }
 
 uint8_t IPv4Packet::HeaderLength() const {
-    return (data_[0] & 0x0F) * 4;
+    return (m_data[0] & 0x0F) * 4;
 }
 
 uint16_t IPv4Packet::TotalLength() const {
-    return ntohs(*reinterpret_cast<const uint16_t*>(data_ + 2));
+    return ntohs(*reinterpret_cast<const uint16_t*>(m_data + 2));
 }
 
 uint8_t IPv4Packet::ProtocolRaw() const {
-    return data_[9];
+    return m_data[9];
 }
 
 Protocol IPv4Packet::GetProtocol() const {
@@ -80,21 +80,21 @@ Protocol IPv4Packet::GetProtocol() const {
     }
 }
 std::string IPv4Packet::SrcAddress() const {
-    return IPToString(*reinterpret_cast<const uint32_t*>(data_ + 12));
+    return IPToString(*reinterpret_cast<const uint32_t*>(m_data + 12));
 }
 
 std::string IPv4Packet::DstAddress() const {
-    return IPToString(*reinterpret_cast<const uint32_t*>(data_ + 16));
+    return IPToString(*reinterpret_cast<const uint32_t*>(m_data + 16));
 }
 
 const uint8_t* IPv4Packet::Payload() const {
-    return data_ + HeaderLength();
+    return m_data + HeaderLength();
 }
 
 size_t IPv4Packet::PayloadLength() const {
     size_t header_len = HeaderLength();
     size_t total_len = TotalLength();
-    return (total_len > header_len && total_len <= length_) ? (total_len - header_len) : 0;
+    return (total_len > header_len && total_len <= m_length) ? (total_len - header_len) : 0;
 }
 
 std::string IPv4Packet::IPToString(uint32_t ip) {

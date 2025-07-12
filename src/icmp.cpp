@@ -21,39 +21,40 @@ struct IcmpHeader {
 };
 #pragma pack(pop)
 
-Packet::Packet(const uint8_t* data, size_t length) : data_(data), length_(length), valid_(false) {
+Packet::Packet(const uint8_t* data, size_t length)
+    : m_data(data), m_length(length), m_valid(false) {
     if (length >= sizeof(IcmpHeader)) {
-        valid_ = true;
+        m_valid = true;
     }
 }
 
 bool Packet::IsValid() const {
-    return valid_;
+    return m_valid;
 }
 
 uint8_t Packet::Type() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const IcmpHeader*>(data_);
+    auto hdr = reinterpret_cast<const IcmpHeader*>(m_data);
     return hdr->type;
 }
 
 uint8_t Packet::Code() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const IcmpHeader*>(data_);
+    auto hdr = reinterpret_cast<const IcmpHeader*>(m_data);
     return hdr->code;
 }
 
 uint16_t Packet::Checksum() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const IcmpHeader*>(data_);
+    auto hdr = reinterpret_cast<const IcmpHeader*>(m_data);
     return ntohs(hdr->checksum);
 }
 
 std::string Packet::Summary() const {
-    if (!valid_)
+    if (!m_valid)
         return "Invalid ICMP Packet";
     std::ostringstream oss;
     oss << "ICMP Packet: Type=" << (int) Type() << ", Code=" << (int) Code();

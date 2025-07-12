@@ -26,8 +26,8 @@ class Packet {
     std::string Summary() const;
 
   private:
-    const uint8_t* data_;
-    size_t length_;
-    bool valid_;
+    const uint8_t* m_data;
+    size_t m_length;
+    bool m_valid;
 };
 } // namespace libpkt::icmp

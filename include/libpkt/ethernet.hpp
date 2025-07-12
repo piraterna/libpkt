@@ -13,13 +13,16 @@
 
 namespace libpkt {
 
+// EthernetType, values gathered from: https://en.wikipedia.org/wiki/EtherType#Values
+// NOTE 1: Not all values are added
+// NOTE 2: Not all these has a libpkt implementation
 enum class EtherType : uint16_t {
-    IPv4 = 0x0800,
-    ARP = 0x0806,
-    WakeOnLAN = 0x0842,
-    IPv6 = 0x86DD,
-    VLAN = 0x8100,
-    LLDP = 0x88CC,
+    IPv4 = 0x0800, // Internet Protocol version 4
+    ARP = 0x0806,  // Adress Resolution Protocol
+    WOL = 0x0842,  // Wake-On-LAN
+    VLAN = 0x8100, // VLAN-tagged frame (IEE 802.1Q)
+    IPv6 = 0x86DD, // Internet Protocol version 6
+    LLDP = 0x88CC, // Link Layer Discovery Protocol
     Unknown = 0xFFFF
 };
 
@@ -40,12 +43,12 @@ class EthernetFrame {
     size_t PayloadLength() const;
 
   private:
-    std::array<uint8_t, 6> dst_mac_;
-    std::array<uint8_t, 6> src_mac_;
-    uint16_t ethertype_;
-    const uint8_t* payload_;
-    size_t payload_len_;
-    bool valid_;
+    std::array<uint8_t, 6> m_dst_mac;
+    std::array<uint8_t, 6> m_src_mac;
+    uint16_t m_ethertype;
+    const uint8_t* m_payload;
+    size_t m_payload_len;
+    bool m_valid;
 
     std::string MacToString(const std::array<uint8_t, 6>& mac) const;
 };

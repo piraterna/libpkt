@@ -26,48 +26,49 @@ struct ArpHeader {
 };
 #pragma pack(pop)
 
-Packet::Packet(const uint8_t* data, size_t length) : data_(data), length_(length), valid_(false) {
+Packet::Packet(const uint8_t* data, size_t length)
+    : m_data(data), m_length(length), m_valid(false) {
     if (length >= sizeof(ArpHeader)) {
-        valid_ = true;
+        m_valid = true;
     }
 }
 
 bool Packet::IsValid() const {
-    return valid_;
+    return m_valid;
 }
 
 uint16_t Packet::HardwareType() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return ntohs(hdr->hw_type);
 }
 
 uint16_t Packet::ProtocolType() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return ntohs(hdr->proto_type);
 }
 
 uint8_t Packet::HardwareSize() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return hdr->hw_size;
 }
 
 uint8_t Packet::ProtocolSize() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return hdr->proto_size;
 }
 
 uint16_t Packet::Opcode() const {
-    if (!valid_)
+    if (!m_valid)
         return 0;
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return ntohs(hdr->opcode);
 }
 
@@ -88,35 +89,35 @@ std::string Packet::IPToString(const uint8_t* ip) const {
 }
 
 std::string Packet::SenderMAC() const {
-    if (!valid_)
+    if (!m_valid)
         return {};
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return MACToString(hdr->sender_mac);
 }
 
 std::string Packet::SenderIP() const {
-    if (!valid_)
+    if (!m_valid)
         return {};
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return IPToString(hdr->sender_ip);
 }
 
 std::string Packet::TargetMAC() const {
-    if (!valid_)
+    if (!m_valid)
         return {};
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return MACToString(hdr->target_mac);
 }
 
 std::string Packet::TargetIP() const {
-    if (!valid_)
+    if (!m_valid)
         return {};
-    auto hdr = reinterpret_cast<const ArpHeader*>(data_);
+    auto hdr = reinterpret_cast<const ArpHeader*>(m_data);
     return IPToString(hdr->target_ip);
 }
 
 std::string Packet::Summary() const {
-    if (!valid_)
+    if (!m_valid)
         return "Invalid ARP Packet";
     std::ostringstream oss;
     oss << "ARP Packet: Opcode=" << Opcode() << ", Sender=" << SenderMAC() << "/" << SenderIP()
