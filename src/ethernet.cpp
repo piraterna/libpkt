@@ -55,7 +55,7 @@ EtherType EthernetFrame::Ethertype() const {
     case 0x0806:
         return EtherType::ARP;
     case 0x0842:
-        return EtherType::WakeOnLAN;
+        return EtherType::WOL;
     case 0x86DD:
         return EtherType::IPv6;
     case 0x8100:
