@@ -14,3 +14,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB_RECURSE LIBPKT_SOURCES src/*.cpp include/libpkt/*.hpp)
 add_library(libpkt STATIC ${LIBPKT_SOURCES})
 target_include_directories(libpkt PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+add_executable(examples_simple examples/all.cpp)
+target_link_libraries(examples_simple PRIVATE libpkt)
+target_include_directories(examples_simple PRIVATE ${PROJECT_SOURCE_DIR}/include)

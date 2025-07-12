@@ -1,0 +1,15 @@
+Checks: >
+  clang-analyzer-*,modernize-*,readability-*,performance-*,
+  bugprone-*,portability-*,cppcoreguidelines-*,
+  misc-*,google-*,-google-runtime-references
+
+WarningsAsErrors: ''
+HeaderFilterRegex: 'include/libpkt/.*'
+FormatStyle: file
+CheckOptions:
+  - key:             modernize-use-nullptr.NullMacros
+    value:           'NULL'
+  - key:             readability-identifier-naming.MemberPrefix
+    value:           'm_'
+  - key:             readability-identifier-naming.ClassCase
+    value:           CamelCase
