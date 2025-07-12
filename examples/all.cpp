@@ -3,7 +3,6 @@
 #include "libpkt/icmp.hpp"
 #include "libpkt/interface.hpp"
 #include "libpkt/ipv4.hpp"
-#include "libpkt/ipv6.hpp"
 #include "libpkt/protocol.hpp"
 #include "libpkt/tcp.hpp"
 #include "libpkt/udp.hpp"
