@@ -1,0 +1,23 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 100
+
+AllowShortFunctionsOnASingleLine: Empty
+BreakBeforeBraces: Allman
+
+NamespaceIndentation: All
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignTrailingComments: true
+
+SortIncludes: true
+IncludeBlocks: Preserve
+SpaceAfterCStyleCast: true
+SpacesBeforeTrailingComments: 1
+
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+Cpp11BracedListStyle: true
+AlwaysBreakTemplateDeclarations: Yes
